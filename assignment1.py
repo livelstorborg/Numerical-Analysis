@@ -151,3 +151,25 @@ def OLS_cholesky(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     theta = backward(R, z)
     
     return theta
+
+
+
+# --------------- Plotting ---------------
+
+n = 30
+start = -2
+stop = 2
+    
+np.random.seed(1)
+x = np.linspace(start, stop, n)
+eps = 1
+r = np.random.rand(n) * eps
+    
+y1 = x * (np.cos(r + 0.5 * x**3) + np.sin(0.5 * x**3))     # Dataset 1
+y2 = 4*x**5 - 5*x**4 - 20*x**3 + 10*x**2 + 40*x + 10 + r   # Dataset 2 
+
+y1_true = x * (np.cos(0.5 * x**3) + np.sin(0.5 * x**3))
+y2_true = 4*x**5 - 5*x**4 - 20*x**3 + 10*x**2 + 40*x + 10  
+
+A3 = polynomial_features(x, 2)  # Degree 2 polynomial (3 coefficients)
+A8 = polynomial_features(x, 7)  # Degree 7 polynomial (8 coefficients)
