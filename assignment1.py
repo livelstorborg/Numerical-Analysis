@@ -125,3 +125,29 @@ def OLS_qr(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     theta = backward(R_thin, y_rotated)
     
     return theta
+
+
+
+def OLS_cholesky(X: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """
+    Solve ordinary least squares using Cholesky factorization.
+    
+    Parameters
+    ----------
+    X : np.ndarray
+        Design matrix of shape (n, m)
+    y : np.ndarray
+        Response vector of shape (n,)
+        
+    Returns
+    -------
+    np.ndarray
+        Parameter estimates of shape (m,)
+    """
+    
+    R = np.linalg.cholesky(X.T @ X).T  
+
+    z = forward(R.T, X.T @ y)
+    theta = backward(R, z)
+    
+    return theta
