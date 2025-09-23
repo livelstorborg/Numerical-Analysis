@@ -173,3 +173,50 @@ y2_true = 4*x**5 - 5*x**4 - 20*x**3 + 10*x**2 + 40*x + 10
 
 A3 = polynomial_features(x, 2)  # Degree 2 polynomial (3 coefficients)
 A8 = polynomial_features(x, 7)  # Degree 7 polynomial (8 coefficients)
+
+
+
+# --------------- m=3 (polynomial degree 2) ---------------
+
+# ----- Dataset 1 -----
+theta1_qr_m3 = OLS_qr(A3, y1)
+theta1_chol_m3 = OLS_cholesky(A3, y1)
+y1_qr_m3 = A3 @ theta1_qr_m3
+y1_chol_m3 = A3 @ theta1_chol_m3
+
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x, y1, color='white', edgecolors='steelblue', s=50, label='Data')
+plt.plot(x, y1_qr_m3, '-', color='blue', linewidth=2, label='QR', alpha=0.8)
+plt.plot(x, y1_chol_m3, '--', color='red', linewidth=1.5, label='Cholesky', alpha=1)
+plt.legend(fontsize=16)
+# plt.title(f'Degree 2 polynomial fit of ' + r'$y = x (\cos{\frac{x^3}{2}} + \sin{\frac{x^3}{2}})$')
+plt.xlabel('x', fontsize=16)
+plt.ylabel('Data values ' + r'$y(x)$', fontsize=16)
+plt.grid(True, alpha=0.3)
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
+plt.tight_layout()
+plt.savefig('dataset1_degree2.pdf')
+plt.show()
+
+# ----- Dataset 2 -----
+theta2_qr_m3 = OLS_qr(A3, y2)
+theta2_chol_m3 = OLS_cholesky(A3, y2)
+y2_qr_m3 = A3 @ theta2_qr_m3
+y2_chol_m3 = A3 @ theta2_chol_m3
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x, y2, color='white', edgecolors='steelblue', s=50, label='y')
+# plt.plot(x, y2_true, label='True y')
+plt.plot(x, y2_qr_m3, '-', color='blue', linewidth=2, label='QR', alpha=0.8)
+plt.plot(x, y2_chol_m3, '--', color='red', linewidth=1.5, label='Cholesky', alpha=1)
+plt.legend(fontsize=16)
+# plt.title(f'Degree 2 polnomial fit of ' + r'$y = 4x^5 - 5x^4 -20x^3 + 10x^2 + 40x + 10$')
+plt.xlabel('x', fontsize=16)
+plt.ylabel('Data values ' + r'$y(x)$', fontsize=16)
+plt.grid(True)
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
+plt.savefig('dataset2_degree2.pdf')
+plt.show()
