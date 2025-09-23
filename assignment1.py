@@ -63,7 +63,6 @@ def forward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
     return x
 
 
-
 def backward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
     Solve upper triangular system Ax = b using backward substitution.
@@ -98,7 +97,6 @@ def backward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
     return x
 
 
-
 def OLS_qr(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     """
     Solve ordinary least squares using QR decomposition.
@@ -127,7 +125,6 @@ def OLS_qr(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     return theta
 
 
-
 def OLS_cholesky(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     """
     Solve ordinary least squares using Cholesky factorization.
@@ -154,6 +151,7 @@ def OLS_cholesky(X: np.ndarray, y: np.ndarray) -> np.ndarray:
 
 
 
+
 # --------------- Plotting ---------------
 
 n = 30
@@ -173,6 +171,7 @@ y2_true = 4*x**5 - 5*x**4 - 20*x**3 + 10*x**2 + 40*x + 10
 
 A3 = polynomial_features(x, 2)  # Degree 2 polynomial (3 coefficients)
 A8 = polynomial_features(x, 7)  # Degree 7 polynomial (8 coefficients)
+
 
 
 
@@ -219,4 +218,51 @@ plt.grid(True)
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 plt.savefig('dataset2_degree2.pdf')
+plt.show()
+
+
+
+
+# --------------- m=8 (polynomial degree 7) ---------------
+
+# ----- Dataset 1 -----
+theta1_qr_m8 = OLS_qr(A8, y1)
+theta1_chol_m8 = OLS_cholesky(A8, y1)
+y1_qr_m8 = A8 @ theta1_qr_m8
+y1_chol_m8 = A8 @ theta1_chol_m8
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x, y1, color='white', edgecolors='steelblue', s=50, label='y')
+# plt.plot(x, y1_true, label='True y')
+plt.plot(x, y1_qr_m8, '-', color='blue', linewidth=2, label='QR', alpha=0.8)
+plt.plot(x, y1_chol_m8, '--', color='red', linewidth=1.5, label='Cholesky', alpha=1)
+plt.legend(fontsize=16)
+# plt.title(f'Degree 7 polynomial fit of ' + r'$y = x (\cos{\frac{x^3}{2}} + \sin{\frac{x^3}{2}})$')
+plt.xlabel('x', fontsize=16)
+plt.ylabel('Data values ' + r'$y(x)$', fontsize=16)
+plt.grid(True)
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
+plt.savefig('dataset1_degree7.pdf')
+plt.show()
+
+# ----- Dataset 2 -----
+theta2_qr_m8 = OLS_qr(A8, y2)
+theta2_chol_m8 = OLS_cholesky(A8, y2)
+y2_qr_m8 = A8 @ theta2_qr_m8
+y2_chol_m8 = A8 @ theta2_chol_m8
+
+plt.figure(figsize=(8, 5))
+plt.scatter(x, y2, color='white', edgecolors='steelblue', s=50, label='y')
+# plt.plot(x, y2_true, label='True y')
+plt.plot(x, y2_qr_m8, '-', color='blue', linewidth=2, label='QR', alpha=0.8)
+plt.plot(x, y2_chol_m8, '--', color='red', linewidth=1.5, label='Cholesky', alpha=1)
+plt.legend(fontsize=16)
+plt.xlabel('x', fontsize=16)
+plt.ylabel('Data values ' + r'$y(x)$', fontsize=16)
+# plt.title(f'Degree 7 polnomial fit of ' + r'$y = 4x^5 - 5x^4 -20x^3 + 10x^2 + 40x + 10$')
+plt.grid(True)
+plt.xticks(fontsize=16)
+plt.yticks(fontsize=16)
+plt.savefig('dataset2_degree7.pdf')
 plt.show()
