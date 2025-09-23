@@ -96,3 +96,32 @@ def backward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
             raise ValueError('Input singular')
     
     return x
+
+
+
+def OLS_qr(X: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """
+    Solve ordinary least squares using QR decomposition.
+    
+    Parameters
+    ----------
+    X : np.ndarray
+        Design matrix of shape (n, m)
+    y : np.ndarray
+        Response vector of shape (n,)
+        
+    Returns
+    -------
+    np.ndarray
+        Parameter estimates of shape (m,)
+    """
+    Q, R = qr(X)
+    
+    m = X.shape[1]  
+    Q_thin = Q[:, :m]  
+    R_thin = R[:m, :m] 
+    
+    y_rotated = Q_thin.T @ y
+    theta = backward(R_thin, y_rotated)
+    
+    return theta
