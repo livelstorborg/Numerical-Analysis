@@ -29,8 +29,6 @@ def polynomial_features(x: np.ndarray, degree: int) -> np.ndarray:
     return A
 
 
-
-
 def forward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
     """
     Solve lower triangular system Ax = b using forward substitution.
@@ -57,6 +55,41 @@ def forward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
         if abs(A[k, k]) > 1e-12:
             temp = 0
             for j in range(k):  
+                temp += A[k, j] * x[j]
+            x[k] = (b[k] - temp) / A[k, k]
+        else:
+            raise ValueError('Input singular')
+    
+    return x
+
+
+
+def backward(A: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """
+    Solve upper triangular system Ax = b using backward substitution.
+    
+    Parameters
+    ----------
+    A : np.ndarray
+        Upper triangular coefficient matrix of shape (n, n)
+    b : np.ndarray
+        Right-hand side vector of shape (n,)
+        
+    Returns
+    -------
+    np.ndarray
+        Solution vector x of shape (n,)
+    """
+    n = A.shape[0]
+    if b.shape[0] != n:
+        raise ValueError('Input dimensions do not match')
+    
+    x = np.zeros(n)
+    
+    for k in range(n-1, -1, -1):
+        if abs(A[k, k]) > 1e-12:
+            temp = 0
+            for j in range(k+1, n):
                 temp += A[k, j] * x[j]
             x[k] = (b[k] - temp) / A[k, k]
         else:
